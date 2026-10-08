@@ -1,0 +1,532 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Листва — Каталог книг</title>
+
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0e0b14;
+    color: #f4effa;
+  }
+
+  header {
+    padding: 22px 7%;
+    background: #17101f;
+    border-bottom: 1px solid #33213e;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .logo {
+    font-size: 26px;
+    font-weight: bold;
+    color: #c28aff;
+  }
+
+  .header-text {
+    color: #a99bb6;
+    font-size: 13px;
+  }
+
+  main {
+    max-width: 1100px;
+    margin: auto;
+    padding: 35px 20px;
+  }
+
+  .hero {
+    padding: 45px;
+    border-radius: 18px;
+    background: linear-gradient(120deg, #39204d, #571d38);
+    margin-bottom: 25px;
+  }
+
+  .hero h1 {
+    font-size: 36px;
+    margin: 0 0 15px;
+  }
+
+  .hero h1 span {
+    color: #ff7b9a;
+  }
+
+  .hero p {
+    color: #e1cde9;
+    line-height: 1.7;
+    font-size: 15px;
+    max-width: 650px;
+    margin-bottom: 0;
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 30px;
+  }
+
+  .stat {
+    background: #1b1425;
+    border: 1px solid #352440;
+    padding: 23px;
+    border-radius: 14px;
+  }
+
+  .stat strong {
+    display: block;
+    color: #c28aff;
+    font-size: 28px;
+    margin-bottom: 8px;
+  }
+
+  .stat:nth-child(2) strong {
+    color: #ff708e;
+  }
+
+  .stat span {
+    color: #a99bb6;
+    font-size: 13px;
+  }
+
+  .catalog {
+    background: #1b1425;
+    border: 1px solid #352440;
+    padding: 28px;
+    border-radius: 17px;
+  }
+
+  .catalog h2 {
+    margin: 0 0 8px;
+    font-size: 24px;
+  }
+
+  .description {
+    color: #a99bb6;
+    font-size: 13px;
+    margin-bottom: 25px;
+  }
+
+  .controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  input, select {
+    background: #100c18;
+    color: #f4effa;
+    border: 1px solid #44304e;
+    padding: 14px;
+    border-radius: 9px;
+    font-size: 14px;
+    outline: none;
+  }
+
+  input {
+    flex: 1;
+    min-width: 0;
+  }
+
+  select {
+    min-width: 205px;
+    cursor: pointer;
+  }
+
+  input:focus, select:focus {
+    border-color: #b67aff;
+  }
+
+  #resultCount {
+    color: #bb9cd3;
+    font-size: 13px;
+    margin-bottom: 15px;
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+  }
+
+  th {
+    background: #30203d;
+    color: #d6b8ec;
+    padding: 16px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  th:first-child {
+    border-radius: 9px 0 0 9px;
+  }
+
+  th:last-child {
+    border-radius: 0 9px 9px 0;
+  }
+
+  td {
+    padding: 17px 16px;
+    border-bottom: 1px solid #352440;
+    font-size: 14px;
+  }
+
+  tbody tr:hover {
+    background: #291c35;
+  }
+
+  .book-title {
+    font-weight: bold;
+    color: #f5eafa;
+  }
+
+  .price {
+    color: #ff7896;
+    font-weight: bold;
+  }
+
+  .status {
+    text-align: center;
+    color: #a99bb6;
+    padding: 35px;
+  }
+
+  .error {
+    color: #ff7896;
+  }
+
+  footer {
+    text-align: center;
+    padding: 35px 20px;
+    color: #897b96;
+    font-size: 12px;
+  }
+
+  @media (max-width: 650px) {
+    header {
+      padding: 20px;
+    }
+
+    .header-text {
+      font-size: 11px;
+    }
+
+    .hero {
+      padding: 30px 24px;
+    }
+
+    .hero h1 {
+      font-size: 28px;
+    }
+
+    .stats {
+      grid-template-columns: 1fr;
+    }
+
+    .catalog {
+      padding: 18px;
+    }
+
+    .controls {
+      flex-direction: column;
+    }
+
+    input, select {
+      width: 100%;
+    }
+
+    table {
+      min-width: 540px;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">✦ Листва</div>
+  <div class="header-text">Электронная библиотека</div>
+</header>
+
+<main>
+
+  <section class="hero">
+    <h1>Мир книг <span>в одном месте.</span></h1>
+    <p>
+      Добро пожаловать в электронную библиотеку «Листва».
+      Здесь можно найти интересующие книги, посмотреть
+      авторов, сравнить цены и отсортировать каталог.
+    </p>
+  </section>
+
+  <section class="stats">
+    <div class="stat">
+      <strong id="totalBooks">—</strong>
+      <span>Книг в каталоге</span>
+    </div>
+
+    <div class="stat">
+      <strong id="totalAuthors">—</strong>
+      <span>Всего авторов</span>
+    </div>
+
+    <div class="stat">
+      <strong id="averagePrice">—</strong>
+      <span>Средняя цена книги</span>
+    </div>
+  </section>
+
+  <section class="catalog">
+    <h2>Каталог книг</h2>
+    <p class="description">
+      Поиск и сортировка литературы из базы данных Supabase
+    </p>
+
+    <div class="controls">
+      <input
+        type="search"
+        id="search"
+        placeholder="Поиск по названию или автору..."
+      >
+
+      <select id="sort">
+        <option value="titleAsc">Название: А–Я</option>
+        <option value="titleDesc">Название: Я–А</option>
+        <option value="priceAsc">Цена: по возрастанию</option>
+        <option value="priceDesc">Цена: по убыванию</option>
+      </select>
+    </div>
+
+    <p id="resultCount">Загрузка...</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>№</th>
+            <th>Название книги</th>
+            <th>Автор</th>
+            <th>Цена</th>
+          </tr>
+        </thead>
+
+        <tbody id="bookList">
+          <tr>
+            <td colspan="4" class="status">
+              Загрузка книг...
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  © 2026 Листва · Supabase + GitHub Pages
+</footer>
+
+<script type="module">
+  import { createClient } from
+    'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+  const SUPABASE_URL =
+    'https://ewfgppokeqyzpfvrtglr.supabase.co';
+
+  const SUPABASE_KEY =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3ZmdwcG9rZXF5enBmdnJ0Z2xyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE0MzM1MTYsImV4cCI6MjEwNzAwOTUxNn0.4zz6pyOL1UkEUwszcfpUqlG_UxenLyLrJCxmMpmJJ4s';
+
+  const supabase = createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+  let allBooks = [];
+  let allAuthors = [];
+
+  const searchInput = document.getElementById('search');
+  const sortSelect = document.getElementById('sort');
+  const bookList = document.getElementById('bookList');
+  const resultCount = document.getElementById('resultCount');
+
+  function showMessage(message, isError = false) {
+    bookList.replaceChildren();
+
+    const tr = document.createElement('tr');
+    const td = document.createElement('td');
+
+    td.colSpan = 4;
+    td.className = isError ? 'status error' : 'status';
+    td.textContent = message;
+
+    tr.appendChild(td);
+    bookList.appendChild(tr);
+  }
+
+  async function loadBooks() {
+    try {
+      const [booksResult, authorsResult] = await Promise.all([
+        supabase
+          .from('books')
+          .select('id, title, price, authors(name)'),
+
+        supabase
+          .from('authors')
+          .select('id, name')
+      ]);
+
+      if (booksResult.error) {
+        throw booksResult.error;
+      }
+
+      if (authorsResult.error) {
+        throw authorsResult.error;
+      }
+
+      allBooks = booksResult.data || [];
+      allAuthors = authorsResult.data || [];
+
+      updateStats();
+      renderBooks();
+
+    } catch (error) {
+      showMessage(
+        'Ошибка загрузки: ' + error.message,
+        true
+      );
+      resultCount.textContent = 'Не удалось загрузить данные';
+    }
+  }
+
+  function updateStats() {
+    document.getElementById('totalBooks').textContent =
+      allBooks.length;
+
+    document.getElementById('totalAuthors').textContent =
+      allAuthors.length;
+
+    const prices = allBooks
+      .filter(book => book.price != null)
+      .map(book => Number(book.price))
+      .filter(Number.isFinite);
+
+    const total = prices.reduce(
+      (sum, price) => sum + price,
+      0
+    );
+
+    const average = prices.length
+      ? total / prices.length
+      : 0;
+
+    document.getElementById('averagePrice').textContent =
+      average.toFixed(2);
+  }
+
+  function renderBooks() {
+    const query = searchInput.value
+      .trim()
+      .toLowerCase();
+
+    const sort = sortSelect.value;
+
+    const filtered = allBooks.filter(book => {
+      const title = String(book.title || '')
+        .toLowerCase();
+
+      const author = String(
+        book.authors?.name || ''
+      ).toLowerCase();
+
+      return title.includes(query) ||
+             author.includes(query);
+    });
+
+    filtered.sort((a, b) => {
+      if (sort === 'priceAsc' || sort === 'priceDesc') {
+        const aPrice = a.price == null
+          ? null : Number(a.price);
+        const bPrice = b.price == null
+          ? null : Number(b.price);
+
+        if (aPrice == null) return bPrice == null ? 0 : 1;
+        if (bPrice == null) return -1;
+
+        return sort === 'priceAsc'
+          ? aPrice - bPrice
+          : bPrice - aPrice;
+      }
+
+      const comparison = String(a.title || '')
+        .localeCompare(String(b.title || ''), 'ru');
+
+      return sort === 'titleDesc'
+        ? -comparison
+        : comparison;
+    });
+
+    resultCount.textContent =
+      'Найдено книг: ' + filtered.length;
+
+    bookList.replaceChildren();
+
+    if (filtered.length === 0) {
+      showMessage('Книги не найдены');
+      return;
+    }
+
+    filtered.forEach((book, index) => {
+      const row = document.createElement('tr');
+
+      const number = document.createElement('td');
+      number.textContent = index + 1;
+
+      const title = document.createElement('td');
+      title.textContent = book.title || 'Без названия';
+      title.className = 'book-title';
+
+      const author = document.createElement('td');
+      author.textContent =
+        book.authors?.name || 'Неизвестен';
+
+      const price = document.createElement('td');
+      price.textContent =
+        book.price == null
+          ? 'Не указана'
+          : Number(book.price).toFixed(2);
+
+      price.className = 'price';
+
+      row.append(number, title, author, price);
+      bookList.appendChild(row);
+    });
+  }
+
+  searchInput.addEventListener('input', renderBooks);
+  sortSelect.addEventListener('change', renderBooks);
+
+  loadBooks();
+</script>
+
+</body>
+</html>
